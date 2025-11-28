@@ -50,58 +50,95 @@ const SpeciesModal = ({ isOpen, onClose, onSave, initialData }: SpeciesModalProp
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-            <div className="relative w-full h-full max-w-2xl md:h-auto">
-                <div className="bg-white border border-4 rounded-lg shadow relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            {/* Overlay */}
+            <div 
+                className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity"
+                onClick={onClose}
+            />
+            
+            {/* Modal Container */}
+            <div className="relative w-full max-w-2xl mx-auto my-auto">
+                <div className="relative bg-white rounded-xl shadow-2xl transform transition-all">
                     
-                    <div className="flex items-start justify-between p-5 border-b rounded-t">
-                        <h3 className="text-xl font-semibold">
-                            {initialData ? 'Editar Especie' : 'Nueva Especie'}
-                        </h3>
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-4 border-b border-gray-200 gap-2 sm:gap-0">
+                        <div className="flex-1">
+                            <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
+                                {initialData ? 'Editar Especie' : 'Nueva Especie'}
+                            </h3>
+                            <p className="mt-1 text-xs sm:text-sm text-gray-500">
+                                {initialData ? 'Modifica la información de la especie' : 'Ingresa los datos de la nueva especie'}
+                            </p>
+                        </div>
                         <button 
                             type="button" 
                             onClick={onClose}
-                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                            className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-2 transition-colors duration-200 absolute top-4 right-4 sm:relative sm:top-0 sm:right-0"
+                            aria-label="Cerrar modal"
                         >
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
                     </div>
 
-                    <div className="p-6 space-y-6">
-                        <form onSubmit={handleSubmit}>
-                            <div className="grid grid-cols-6 gap-6">
-                                <div className="col-span-6">
-                                    <label htmlFor="specie-name" className="text-sm font-medium text-gray-900 block mb-2">Nombre de la Especie</label>
-                                    <input 
-                                        type="text" 
-                                        name="specie-name" 
-                                        id="specie-name" 
-                                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" 
-                                        placeholder="Ej: Cerdo" 
-                                        required 
-                                        value={formData.Specie_Name}
-                                        onChange={(e) => setFormData({ ...formData, Specie_Name: e.target.value })}
-                                    />
-                                </div>
-                            </div>
+                    {/* Body */}
+                    <div className="px-4 sm:px-6 py-6">
+                        <div className="space-y-6">
                             
-                            <div className="mt-6 border-t border-gray-200 rounded-b pt-6">
-                                <button 
-                                    className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50" 
-                                    type="submit"
-                                    disabled={loading}
+                            <div>
+                                <label 
+                                    htmlFor="specie-name" 
+                                    className="block text-sm font-medium text-gray-700 mb-2"
                                 >
-                                    {loading ? 'Guardando...' : 'Guardar todo'}
-                                </button>
+                                    Nombre de la Especie <span className="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="specie-name" 
+                                    id="specie-name" 
+                                    className="w-full px-3 sm:px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-sm 
+                                             placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent 
+                                             transition-colors duration-200 outline-none" 
+                                    placeholder="Ej: Cerdo" 
+                                    required 
+                                    value={formData.Specie_Name}
+                                    onChange={(e) => setFormData({ ...formData, Specie_Name: e.target.value })}
+                                />
+                            </div>
+
+                            {/* Footer con botones */}
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-4 border-t border-gray-200">
                                 <button 
                                     onClick={onClose}
-                                    className="text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-2" 
                                     type="button"
+                                    className="w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 
+                                             rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 
+                                             focus:ring-gray-300 transition-colors duration-200 order-2 sm:order-1"
                                 >
                                     Cancelar
                                 </button>
+                                <button 
+                                    type="button"
+                                    onClick={handleSubmit}
+                                    disabled={loading}
+                                    className="w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-white bg-cyan-600 rounded-lg 
+                                             hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
+                                             focus:ring-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed 
+                                             transition-colors duration-200 flex items-center justify-center gap-2 order-1 sm:order-2"
+                                >
+                                    {loading && (
+                                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    )}
+                                    {loading ? 'Guardando...' : initialData ? 'Guardar cambios' : 'Crear especie'}
+                                </button>
                             </div>
-                        </form>
+                            
+                        </div>
                     </div>
 
                 </div>
