@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, LayoutDashboard, Bell, DollarSign } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import Card from '../components/CardsDashboard';
@@ -7,10 +8,14 @@ import EspeciesTable from '../components/SpeciesTable';
 
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const navigate = useNavigate();
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <Sidebar 
+        isOpen={sidebarOpen} 
+        setIsOpen={setSidebarOpen} 
+      />
       
       {/* Contenido Principal */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -30,7 +35,9 @@ export default function Dashboard() {
           {/* Tarjetas superiores */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <Card title="Lotes" value="0" icon={LayoutDashboard} />
-            <Card title="Novedades" value="0" icon={Bell} />
+            <div onClick={() => navigate('/novelties')} className="cursor-pointer transition-transform hover:scale-105">
+                <Card title="Novedades" value="0" icon={Bell} />
+            </div>
             <Card title="Gastos" value="$0" icon={DollarSign} />
           </div>
 

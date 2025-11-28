@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { X,LayoutDashboard, Package, DollarSign, Activity, Bell } from 'lucide-react';
 
 interface SidebarProps {
@@ -7,14 +7,15 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
-    const [activeMenu, setActiveMenu] = useState('Dashboard');
+    const navigate = useNavigate();
+    const location = useLocation();
     
     const menuItems = [
-        { name: 'Dashboard', icon: LayoutDashboard },
-        { name: 'Suplementos - Categorías', icon: Package },
-        { name: 'Gastos', icon: DollarSign },
-        { name: 'Producción', icon: Activity },
-        { name: 'Novedades', icon: Bell }
+        { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
+        { name: 'Suplementos - Categorías', icon: Package, path: '#' },
+        { name: 'Gastos', icon: DollarSign, path: '#' },
+        { name: 'Producción', icon: Activity, path: '#' },
+        { name: 'Novedades', icon: Bell, path: '/novelties' }
     ];
 
     return (
@@ -51,11 +52,14 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                     {menuItems.map((item) => (
                     <button
                         key={item.name}
-                        onClick={() => setActiveMenu(item.name)}
+                        onClick={() => {
+                            navigate(item.path);
+                            if (window.innerWidth < 1024) setIsOpen(false);
+                        }}
                         className={`
                         w-full flex items-center gap-3 px-4 py-3 rounded-lg
                         text-sm font-medium transition-colors
-                        ${activeMenu === item.name 
+                        ${location.pathname === item.path 
                             ? 'bg-blue-50 text-blue-600' 
                             : 'text-gray-700 hover:bg-gray-50'
                         }
