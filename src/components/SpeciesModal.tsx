@@ -47,7 +47,7 @@ const SpeciesModal = ({ isOpen, onClose, onSave, initialData }: SpeciesModalProp
             await onSave(formData);
             onClose();
         } catch (error) {
-            console.error('Error saving species:', error);
+            console.error('Error al guardar la especie:', error);
         } finally {
             setLoading(false);
         }
