@@ -26,8 +26,6 @@ const SpeciesModal = ({ isOpen, onClose, onSave, initialData }: SpeciesModalProp
     if (!isOpen) return null;
 
     const validateInput = (text: string) => {
-        // Allow letters (including accents), numbers, and spaces.
-        // Reject special characters often used in SQL injection like ' " ; --
         const regex = /^[a-zA-Z0-9\s\u00C0-\u00FF]+$/;
         return regex.test(text);
     };
@@ -45,7 +43,7 @@ const SpeciesModal = ({ isOpen, onClose, onSave, initialData }: SpeciesModalProp
             await onSave(formData);
             onClose();
         } catch (error) {
-            console.error('Error saving species:', error);
+            console.error('Error al guardar la especie:', error);
         } finally {
             setLoading(false);
         }
