@@ -37,7 +37,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                 <div className="h-full flex flex-col">
                 {/* Header */}
                 <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200">
-                    <h1 className="text-xl font-bold text-gray-900">Piscicultura</h1>
+                    <h1 className="text-xl font-bold text-gray-900">Agroapp</h1>
                     <button 
                     onClick={() => setIsOpen(false)}
                     className="lg:hidden text-gray-500 hover:text-gray-700"
