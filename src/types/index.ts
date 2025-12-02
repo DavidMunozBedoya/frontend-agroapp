@@ -36,7 +36,10 @@ export interface Lote {
     // Add other fields as needed
 }
 
-
+export interface State {
+    idStates: number;
+    State_Name: string;
+}
 
 export interface Novelty {
     idNovelties?: number; // Optional for creation
@@ -45,4 +48,16 @@ export interface Novelty {
     Date_Novelty: string;
     Batches_idBatches: number;
     Novelty_Categories_idNovelty_Categories: number;
+}
+
+export interface Batch {
+    idBatch: number;
+    Starting_Date: string;
+    Unit_Cost: number;
+    Total_Quantity: number;
+    Cost: number;
+    Weight_Batch: number;
+    Age_Batch: number;
+    Species_idSpecies: number;
+    States_idStates: number;
 }
