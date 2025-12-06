@@ -14,7 +14,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
         { name: 'Suplementos - Categorías', icon: Package, path: '#' },
         { name: 'Gastos', icon: DollarSign, path: '#' },
-        { name: 'Producción', icon: Activity, path: '#' },
+        { name: 'Producción', icon: Activity, path: '/production' },
         { name: 'Novedades', icon: Bell, path: '/novelties' }
     ];
 

@@ -60,4 +60,15 @@ export interface Batch {
     Age_Batch: number;
     Species_idSpecies: number;
     States_idStates: number;
+    Specie_Name?: string;
+}
+
+export interface Production {
+    idProduction: number;
+    Batches_idBatches: number;
+    Date_Production: string;
+    Avg_Weight: number;
+    Total_Weight: number;
+    Weight_Cost: number;
+    Total_Production: number;
 }
