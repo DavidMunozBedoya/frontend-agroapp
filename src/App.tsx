@@ -1,15 +1,44 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import NoveltiesPage from './pages/NoveltiesPage';
 import ProductionPage from './pages/Production';
+import LoginPage from './pages/LoginPage';
 
+// Componente para proteger rutas
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const user = localStorage.getItem('user');
+  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return <>{children}</>;
+};
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/novelties" element={<NoveltiesPage />} />
-      <Route path="/production" element={<ProductionPage />} />
+      {/* Ruta de login */}
+      <Route path="/login" element={<LoginPage />} />
+      
+      {/* Rutas protegidas */}
+      <Route path="/" element={
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/novelties" element={
+        <ProtectedRoute>
+          <NoveltiesPage />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/production" element={
+        <ProtectedRoute>
+          <ProductionPage />
+        </ProtectedRoute>
+      } />
     </Routes>
   );
 }

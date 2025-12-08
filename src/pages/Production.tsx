@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Eye, Search, Menu, Calendar, TrendingUp } from 'lucide-react';
+import { Plus, Edit2, Search, Menu, Calendar, TrendingUp } from 'lucide-react'; // ← Cambiar Eye por Edit2
 import Swal from 'sweetalert2';
 import Sidebar from '../components/Sidebar';
 import ProductionModal from '../components/ProductionModal';
@@ -14,6 +14,7 @@ export default function ProductionPage() {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentProduction, setCurrentProduction] = useState<Production | null>(null); // ← AGREGAR
 
     useEffect(() => {
         fetchData();
@@ -27,7 +28,6 @@ export default function ProductionPage() {
                 batchesService.getAll()
             ]);
             
-            // Validar que sean arrays y mostrar en consola
             console.log('Productions data:', productionsData);
             console.log('Batches data:', batchesData);
             
@@ -44,18 +44,33 @@ export default function ProductionPage() {
     };
 
     const handleCreate = () => {
+        setCurrentProduction(null); // ← AGREGAR
+        setIsModalOpen(true);
+    };
+
+    // ← AGREGAR ESTA FUNCIÓN
+    const handleEdit = (production: Production) => {
+        setCurrentProduction(production);
         setIsModalOpen(true);
     };
 
     const handleSave = async (data: {
-        Batches_idBatches: number;  // ← CAMBIAR AQUÍ
+        Batches_idBatches: number;
         Avg_Weight: number;
         Weight_Cost: number;
     }) => {
         try {
-            await productionService.create(data);
-            Swal.fire('Éxito', 'Producción registrada correctamente', 'success');
+            if (currentProduction) {
+                // ← Actualizar
+                await productionService.update(currentProduction.idProduction, data);
+                Swal.fire('Éxito', 'Producción actualizada correctamente', 'success');
+            } else {
+                // ← Crear nuevo
+                await productionService.create(data);
+                Swal.fire('Éxito', 'Producción registrada correctamente', 'success');
+            }
             setIsModalOpen(false);
+            setCurrentProduction(null); // ← AGREGAR
             fetchData();
         } catch (error) {
             console.error('Error saving production:', error);
@@ -85,22 +100,21 @@ export default function ProductionPage() {
     };
 
     const getBatchInfo = (batchId: number) => {
-    const batch = batches.find(b => b.idBatch === batchId);
-    if (batch) {
-        return `Lote #${batchId} - ${batch.Specie_Name || 'N/A'}`;
-    }
-    return `Lote #${batchId}`;
-};
+        const batch = batches.find(b => b.idBatch === batchId);
+        if (batch) {
+            return `Lote #${batchId} - ${batch.Specie_Name || 'N/A'}`;
+        }
+        return `Lote #${batchId}`;
+    };
 
-    
     const filteredProductions = productions.filter(p => {
-    if (!searchTerm) return true;
-    
-    const batch = batches.find(b => b.idBatch === p.Batches_idBatches); // ← Cambiar aquí
-    if (!batch || !batch.Specie_Name) return false;
-    
-    return batch.Specie_Name.toLowerCase().includes(searchTerm.toLowerCase());
-});
+        if (!searchTerm) return true;
+        
+        const batch = batches.find(b => b.idBatch === p.Batches_idBatches);
+        if (!batch || !batch.Specie_Name) return false;
+        
+        return batch.Specie_Name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
 
     const totalRevenue = productions.reduce((sum, p) => sum + p.Total_Production, 0);
     const totalWeight = productions.reduce((sum, p) => sum + p.Total_Weight, 0);
@@ -237,11 +251,13 @@ export default function ProductionPage() {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-right text-sm font-medium">
+                                                    {/* ← CAMBIAR EL BOTÓN */}
                                                     <button 
+                                                        onClick={() => handleEdit(production)}
                                                         className="p-1 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                                        title="Ver detalles"
+                                                        title="Editar"
                                                     >
-                                                        <Eye className="w-4 h-4" />
+                                                        <Edit2 className="w-4 h-4" />
                                                     </button>
                                                 </td>
                                             </tr>
@@ -255,9 +271,13 @@ export default function ProductionPage() {
 
                 <ProductionModal 
                     isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
+                    onClose={() => {
+                        setIsModalOpen(false);
+                        setCurrentProduction(null); // ← AGREGAR
+                    }}
                     onSave={handleSave}
                     batches={batches}
+                    initialData={currentProduction} // ← AGREGAR
                 />
             </div>
         </div>
