@@ -2,8 +2,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { X,LayoutDashboard, Package, DollarSign, Activity, Bell } from 'lucide-react';
 
 interface SidebarProps {
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
@@ -12,9 +12,9 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     
     const menuItems = [
         { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
-        { name: 'Suplementos - Categorías', icon: Package, path: '#' },
-        { name: 'Gastos', icon: DollarSign, path: '#' },
-        { name: 'Producción', icon: Activity, path: '#' },
+        { name: 'Suplementos - Categorías', icon: Package, path: '/supplies' },
+        { name: 'Gastos', icon: DollarSign, path: '/expenses' },
+        { name: 'Producción', icon: Activity, path: '/production' },
         { name: 'Novedades', icon: Bell, path: '/novelties' }
     ];
 

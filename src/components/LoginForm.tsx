@@ -1,15 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Fish } from 'lucide-react';
 import EmailInput from "./EmailInput";
 import PasswordInput from "./PasswordInput";
-import UserLogin from "../hooks/UserLogin"; // Ajusta la ruta según tu estructura
-import { authService } from "../services/AuthService"; // Ajusta la ruta según tu estructura
+import UserLogin from "../hooks/UserLogin";
+import { authService } from "../services/AuthService";
 
 const LoginForm = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // ← Agregar esto
 
-    // Usar el hook con el callback que maneja el login
     const { form, getData, changed } = UserLogin(async (data) => {
         setLoading(true);
         setError('');
@@ -19,13 +20,11 @@ const LoginForm = () => {
             
             console.log('Login exitoso:', result);
             
-            // Aquí puedes guardar el usuario en localStorage o contexto
+            // Guardar el usuario en localStorage
             localStorage.setItem('user', JSON.stringify(result.data));
             
-            // Redirigir al dashboard o página principal
-            // navigate('/dashboard');
-            
-            alert('Inicio de sesión exitoso!');
+            // Redirigir al dashboard
+            navigate('/'); // ← Cambiar aquí
             
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
