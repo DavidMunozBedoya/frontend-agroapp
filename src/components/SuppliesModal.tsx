@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { X } from 'lucide-react';
-import { suppliesService } from '../services/suppliesService';
+import { suppliesService } from '../services/SuppliesService';
 import type { SupplyCategory, SupplyCatalog } from '../types';
 
 interface SuppliesModalProps {

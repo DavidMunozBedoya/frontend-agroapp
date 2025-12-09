@@ -122,6 +122,6 @@ export interface Expense {
     Batches_idBatches: number;
 
     // Opcionales, para cuando el backend haga JOIN y devuelva nombres
-    Supply_Name?: string;
+    Supplie_Name?: string;
     Batch_Name?: string;
 }

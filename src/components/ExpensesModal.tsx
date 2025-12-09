@@ -159,7 +159,7 @@ export default function ExpensesModal({
                   >
                     {supplies.map((s) => (
                       <option key={s.idSupplies} value={s.idSupplies}>
-                        {s.Supply_Name}
+                        {s.Supplie_Name}
                       </option>
                     ))}
                   </select>
