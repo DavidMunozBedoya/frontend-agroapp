@@ -3,7 +3,7 @@ import { Plus, Edit, Trash2, Search } from 'lucide-react';
 import Swal from 'sweetalert2';
 import Sidebar from '../components/Sidebar';
 import SuppliesModal from '../components/SuppliesModal';
-import { suppliesService } from '../services/suppliesService';
+import { suppliesService } from '../services/SuppliesService';
 import type { SupplyCatalog, SupplyCategory } from '../types';
 
 export default function SuppliesPage() {
@@ -33,7 +33,7 @@ export default function SuppliesPage() {
     const fetchSupplies = async () => {
         setLoading(true);
         try {
-            const allData = await suppliesService.getAllSupplies();
+            const allData = await suppliesService.getAll();
             
             if (Array.isArray(allData)) {
                 setSupplies(allData);
