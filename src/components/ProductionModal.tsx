@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Calculator } from 'lucide-react';
+import type { Production } from '../types'; // ← AGREGAR ESTA IMPORTACIÓN
 
 interface Batch {
     idBatch: number;
@@ -7,27 +8,27 @@ interface Batch {
     Specie_Name?: string;
 }
 
-
 interface ProductionModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (data: { 
-        Batches_idBatches: number;  // ← Cambiar aquí
+        Batches_idBatches: number;
         Avg_Weight: number;
         Weight_Cost: number;
     }) => Promise<void>;
     batches: Batch[];
+    initialData?: Production | null;
 }
 
-const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalProps) => {
+// ← AGREGAR initialData A LOS PARÁMETROS
+const ProductionModal = ({ isOpen, onClose, onSave, batches, initialData }: ProductionModalProps) => {
     const [formData, setFormData] = useState({
-    Batches_idBatches: '',  // ← Cambiar aquí
-    Avg_Weight: '',
-    Weight_Cost: ''
-});
+        Batches_idBatches: '',
+        Avg_Weight: '',
+        Weight_Cost: ''
+    });
     const [loading, setLoading] = useState(false);
     
-    // Estados para los cálculos en tiempo real
     const [calculations, setCalculations] = useState({
         totalQuantity: 0,
         totalWeight: 0,
@@ -35,7 +36,13 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
     });
 
     useEffect(() => {
-        if (!isOpen) {
+        if (initialData) {
+            setFormData({
+                Batches_idBatches: initialData.Batches_idBatches.toString(),
+                Avg_Weight: initialData.Avg_Weight.toString(),
+                Weight_Cost: initialData.Weight_Cost.toString()
+            });
+        } else if (!isOpen) {
             setFormData({
                 Batches_idBatches: '',
                 Avg_Weight: '',
@@ -47,9 +54,8 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
                 totalProduction: 0
             });
         }
-    }, [isOpen]);
+    }, [initialData, isOpen]);
 
-    // Calcular en tiempo real cuando cambien los valores
     useEffect(() => {
         const batchId = parseInt(formData.Batches_idBatches);
         const avgWeight = parseFloat(formData.Avg_Weight) || 0;
@@ -99,7 +105,7 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
         setLoading(true);
         try {
             await onSave({
-                Batches_idBatches: parseInt(formData.Batches_idBatches),  // ← Cambiar aquí
+                Batches_idBatches: parseInt(formData.Batches_idBatches),
                 Avg_Weight: parseFloat(formData.Avg_Weight),
                 Weight_Cost: parseFloat(formData.Weight_Cost)
             });
@@ -120,21 +126,18 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {/* Overlay con blur */}
             <div 
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={onClose}
             />
             
-            {/* Modal */}
             <div className="relative w-full max-w-2xl mx-4 sm:mx-auto max-h-[90vh] overflow-y-auto">
                 <div className="bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all">
                     
-                    {/* Header */}
                     <div className="bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-5 sticky top-0 z-10">
                         <div className="flex items-center justify-between">
                             <h3 className="text-xl font-bold text-white">
-                                Registrar Producción
+                                {initialData ? 'Editar Producción' : 'Registrar Producción'}
                             </h3>
                             <button 
                                 type="button" 
@@ -146,12 +149,10 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
                         </div>
                     </div>
 
-                    {/* Body */}
                     <div>
                         <div className="px-6 py-6">
                             <div className="space-y-5">
                                 
-                                {/* Seleccionar Lote */}
                                 <div className="space-y-2">
                                     <label htmlFor="Batches_idBatches" className="text-sm font-semibold text-gray-700 block">
                                         Lote a Vender
@@ -173,7 +174,6 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
                                     </select>
                                 </div>
 
-                                {/* Info del lote seleccionado */}
                                 {selectedBatch && (
                                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                                         <div className="flex items-center gap-2 mb-2">
@@ -190,7 +190,6 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     
-                                    {/* Peso Promedio */}
                                     <div className="space-y-2">
                                         <label htmlFor="Avg_Weight" className="text-sm font-semibold text-gray-700 block">
                                             Peso Promedio (kg)
@@ -208,7 +207,6 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
                                         />
                                     </div>
 
-                                    {/* Costo por Kilo */}
                                     <div className="space-y-2">
                                         <label htmlFor="Weight_Cost" className="text-sm font-semibold text-gray-700 block">
                                             Costo por Kilo ($)
@@ -228,7 +226,6 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
 
                                 </div>
 
-                                {/* Cálculos en Tiempo Real */}
                                 {calculations.totalWeight > 0 && (
                                     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-5 space-y-3">
                                         <div className="flex items-center gap-2 mb-3">
@@ -267,7 +264,6 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
                             </div>
                         </div>
                         
-                        {/* Footer */}
                         <div className="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row gap-3 sm:justify-end border-t border-gray-200">
                             <button 
                                 onClick={onClose}
@@ -282,7 +278,7 @@ const ProductionModal = ({ isOpen, onClose, onSave, batches }: ProductionModalPr
                                 type="button"
                                 disabled={loading}
                             >
-                                {loading ? 'Guardando...' : 'Registrar Producción'}
+                                {loading ? 'Guardando...' : (initialData ? 'Actualizar' : 'Registrar Producción')}
                             </button>
                         </div>
                     </div>

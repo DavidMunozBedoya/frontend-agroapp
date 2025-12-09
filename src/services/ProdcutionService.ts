@@ -2,7 +2,6 @@ import type { Production } from "../types";
 
 const API_URL = 'http://localhost:3300/productions';
 
-// Interfaz para lo que devuelve el backend (con strings)
 interface ProductionResponse {
     idProduction: number;
     Batches_idBatches: number;
@@ -20,7 +19,6 @@ export const productionService = {
             throw new Error('Error fetching productions');
         }
         const result = await response.json();
-        // Convertir strings a números
         const productions: ProductionResponse[] = result.data || [];
         return productions.map((p) => ({
             ...p,
@@ -45,6 +43,26 @@ export const productionService = {
         });
         if (!response.ok) {
             throw new Error('Error creating production');
+        }
+        const result = await response.json();
+        return result.data || result;
+    },
+
+    // ← AGREGAR ESTE MÉTODO
+    update: async (id: number, data: {
+        Batches_idBatches: number;
+        Avg_Weight: number;
+        Weight_Cost: number;
+    }): Promise<Production> => {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            throw new Error('Error updating production');
         }
         const result = await response.json();
         return result.data || result;
