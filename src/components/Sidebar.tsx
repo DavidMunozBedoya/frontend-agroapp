@@ -13,7 +13,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
     const menuItems = [
         { name: 'Dashboard', icon: LayoutDashboard, path: '/' },
         { name: 'Suplementos - Categorías', icon: Package, path: '#' },
-        { name: 'Gastos', icon: DollarSign, path: '#' },
+        { name: 'Gastos', icon: DollarSign, path: '/expenses' },
         { name: 'Producción', icon: Activity, path: '/production' },
         { name: 'Novedades', icon: Bell, path: '/novelties' }
     ];
