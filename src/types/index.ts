@@ -72,3 +72,21 @@ export interface Production {
     Weight_Cost: number;
     Total_Production: number;
 }
+
+export interface Supply {
+    idSupplies: number;
+    Supply_Name: string;
+}
+
+export interface Expense {
+    idProduction_Expenses: number;
+    Supplies_idSupplies: number;
+    Description: string;
+    Cost: number;
+    Quantity: number;
+    Batches_idBatches: number;
+
+    // Opcionales, para cuando el backend haga JOIN y devuelva nombres
+    Supply_Name?: string;
+    Batch_Name?: string;
+}
