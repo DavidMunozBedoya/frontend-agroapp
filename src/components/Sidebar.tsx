@@ -4,6 +4,8 @@ import { X,LayoutDashboard, Package, DollarSign, Activity, Bell } from 'lucide-r
 interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
@@ -77,3 +79,4 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 };
 
 export default Sidebar;
+
