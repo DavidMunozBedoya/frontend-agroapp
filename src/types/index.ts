@@ -63,6 +63,16 @@ export interface Batch {
     Specie_Name?: string;
 }
 
+export interface Production {
+    idProduction: number;
+    Batches_idBatches: number;
+    Date_Production: string;
+    Avg_Weight: number;
+    Total_Weight: number;
+    Weight_Cost: number;
+    Total_Production: number;
+}
+
 // ===== SUPPLIES TYPES =====
 export interface SupplyCategory {
     idSupplies_Category: number;

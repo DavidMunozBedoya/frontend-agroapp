@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X,LayoutDashboard, Package, DollarSign, Activity, Bell } from 'lucide-react';
+import { X,LayoutDashboard, Package, DollarSign, Activity, Bell, LogOut } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -17,6 +17,11 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         { name: 'Producción', icon: Activity, path: '/production' },
         { name: 'Novedades', icon: Bell, path: '/novelties' }
     ];
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        navigate('/login');
+    };
 
     return (
         <>
@@ -69,6 +74,13 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                         {item.name}
                     </button>
                     ))}
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors rounded-lg"
+                    >
+                        <LogOut className="w-5 h-5" />
+                        <span>Cerrar Sesión</span>
+                    </button>
                 </nav>
                 </div>
             </aside>
