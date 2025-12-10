@@ -60,6 +60,7 @@ export interface Batch {
     Age_Batch: number;
     Species_idSpecies: number;
     States_idStates: number;
+    proceeds: number;
     Specie_Name?: string;
 }
 

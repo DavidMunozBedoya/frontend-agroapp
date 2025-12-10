@@ -10,7 +10,8 @@ const BatchTable = () => {
     const [species, setSpecies] = useState<Species[]>([]);
     const [states, setStates] = useState<State[]>([
         { idStates: 1, State_Name: 'Activo' },
-        { idStates: 2, State_Name: 'Inactivo' }
+        { idStates: 2, State_Name: 'Inactivo' },
+        { idStates: 3, State_Name: 'Vendido' }
     ]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentBatch, setCurrentBatch] = useState<Batch | null>(null);
@@ -128,6 +129,7 @@ const BatchTable = () => {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Edad</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Especie</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Estado</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Ganancia</th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
@@ -170,6 +172,9 @@ const BatchTable = () => {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
                                             {getStateName(batch.States_idStates)}
+                                        </td>
+                                        <td className="px-6 py-4 text-sm text-gray-900">
+                                            {'$' + (isNaN(Number(batch.proceeds)) ? '0.00' : Number(batch.proceeds).toFixed(2))}
                                         </td>
                                         <td className="px-6 py-4 text-right text-sm font-medium">
                                             <div className="flex items-center justify-end gap-2">

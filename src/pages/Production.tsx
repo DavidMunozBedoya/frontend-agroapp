@@ -32,7 +32,7 @@ export default function ProductionPage() {
             console.log('Batches data:', batchesData);
             
             setProductions(Array.isArray(productionsData) ? productionsData : []);
-            setBatches(Array.isArray(batchesData) ? batchesData : []);
+            setBatches(Array.isArray(batchesData) ? batchesData : []); // ← GUARDAR TODOS
         } catch (error) {
             console.error('Error fetching data:', error);
             Swal.fire('Error', 'No se pudieron cargar los datos', 'error');
@@ -273,11 +273,18 @@ export default function ProductionPage() {
                     isOpen={isModalOpen}
                     onClose={() => {
                         setIsModalOpen(false);
-                        setCurrentProduction(null); // ← AGREGAR
+                        setCurrentProduction(null);
                     }}
                     onSave={handleSave}
-                    batches={batches}
-                    initialData={currentProduction} // ← AGREGAR
+                    batches={batches.filter(b => {
+                        // Si estamos editando, incluir el lote actual aunque esté vendido
+                        if (currentProduction) {
+                            return b.States_idStates === 1 || b.idBatch === currentProduction.Batches_idBatches;
+                        }
+                        // Si estamos creando, solo mostrar activos
+                        return b.States_idStates === 1;
+                    })}
+                    initialData={currentProduction}
                 />
             </div>
         </div>
