@@ -8,7 +8,7 @@ import { showAlert, showConfirm } from '../utils/alertUtils';
 const BatchTable = () => {
     const [batches, setBatches] = useState<Batch[]>([]);
     const [species, setSpecies] = useState<Species[]>([]);
-    const [states, setStates] = useState<State[]>([
+    const [states] = useState<State[]>([
         { idStates: 1, State_Name: 'Activo' },
         { idStates: 2, State_Name: 'Inactivo' },
         { idStates: 3, State_Name: 'Vendido' }
