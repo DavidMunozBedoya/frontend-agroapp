@@ -102,6 +102,18 @@ const BatchTable = () => {
         return state ? state.State_Name : 'N/A';
     };
 
+    const formatNumber = (value: number | string) => {
+        const num = Number(value);
+        if (isNaN(num)) return '0';
+        return num.toLocaleString('es-CO');
+    };
+
+    const formatCurrency = (value: number | string) => {
+        const num = Number(value);
+        if (isNaN(num)) return '$0';
+        return '$' + num.toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+
     return ( 
         <>
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -136,13 +148,13 @@ const BatchTable = () => {
                         <tbody className="divide-y divide-gray-200">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={9} className="px-6 py-12 text-center text-gray-500">
+                                    <td colSpan={10} className="px-6 py-12 text-center text-gray-500">
                                         Cargando...
                                     </td>
                                 </tr>
                             ) : batches.length === 0 ? (
                                 <tr>
-                                    <td colSpan={9} className="px-6 py-12 text-center text-gray-500">
+                                    <td colSpan={10} className="px-6 py-12 text-center text-gray-500">
                                         No hay datos disponibles
                                     </td>
                                 </tr>
@@ -153,19 +165,19 @@ const BatchTable = () => {
                                             {formatDate(batch.Starting_Date)}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
-                                            {'$' + (isNaN(Number(batch.Unit_Cost)) ? '0.00' : Number(batch.Unit_Cost).toFixed(2))}
+                                            {formatCurrency(batch.Unit_Cost)}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
-                                            {batch.Total_Quantity}
+                                            {formatNumber(batch.Total_Quantity)}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
-                                            {'$' + (isNaN(Number(batch.Cost)) ? '0.00' : Number(batch.Cost).toFixed(2))}
+                                            {formatCurrency(batch.Cost)}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
-                                            {batch.Weight_Batch} kg
+                                            {formatNumber(batch.Weight_Batch)} kg
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
-                                            {batch.Age_Batch} días
+                                            {formatNumber(batch.Age_Batch)} días
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
                                             {getSpecieName(batch.Species_idSpecies)}
@@ -174,7 +186,7 @@ const BatchTable = () => {
                                             {getStateName(batch.States_idStates)}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-900">
-                                            {'$' + (isNaN(Number(batch.proceeds)) ? '0.00' : Number(batch.proceeds).toFixed(2))}
+                                            {formatCurrency(batch.proceeds)}
                                         </td>
                                         <td className="px-6 py-4 text-right text-sm font-medium">
                                             <div className="flex items-center justify-end gap-2">
